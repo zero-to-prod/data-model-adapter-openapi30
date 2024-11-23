@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Acceptance\Class;
+namespace Tests\Acceptance\Properties;
 
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -12,12 +12,11 @@ class ClassTest extends TestCase
 {
     #[Test] public function generate(): void
     {
-        Engine::generate(
-            OpenApi30::adapt(
-                file_get_contents(__DIR__.'/openapi30.json'),
-                Config::from([Config::directory => self::$test_dir])
-            )
+        $Components = OpenApi30::adapt(
+            file_get_contents(__DIR__.'/openapi30.json'),
+            Config::from([Config::directory => self::$test_dir])
         );
+        Engine::generate($Components);
 
         self::assertStringEqualsFile(
             expectedFile: self::$test_dir.'/User.php',
@@ -25,6 +24,7 @@ class ClassTest extends TestCase
                 <?php
                 class User
                 {
+                public string \$name;
                 }
                 PHP
         );
