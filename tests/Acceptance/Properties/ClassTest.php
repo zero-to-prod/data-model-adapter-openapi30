@@ -7,6 +7,8 @@ use Tests\TestCase;
 use Zerotoprod\DataModelAdapterOpenapi30\OpenApi30;
 use Zerotoprod\DataModelGenerator\Engine;
 use Zerotoprod\DataModelGenerator\Models\Config;
+use Zerotoprod\DataModelGenerator\Models\PropertyConfig;
+use Zerotoprod\DataModelGenerator\Models\Type;
 
 class ClassTest extends TestCase
 {
@@ -14,7 +16,16 @@ class ClassTest extends TestCase
     {
         $Components = OpenApi30::adapt(
             file_get_contents(__DIR__.'/openapi30.json'),
-            Config::from([Config::directory => self::$test_dir])
+            Config::from([
+                Config::directory => self::$test_dir,
+                Config::properties => [
+                    PropertyConfig::types => [
+                        'int32' => [
+                            Type::type => 'string'
+                        ],
+                    ]
+                ]
+            ])
         );
         Engine::generate($Components);
 
@@ -25,6 +36,7 @@ class ClassTest extends TestCase
                 class User
                 {
                 public string \$name;
+                public string \$age;
                 }
                 PHP
         );

@@ -16,18 +16,21 @@ class OpenApi30
         $OpenApi = OpenApi::from(json_decode($open_api_30_schema, true));
         $Models = [];
         foreach ($OpenApi->components->schemas as $name => $Schema) {
-            $properties = [];
-            if ($Schema->properties) {
-                foreach ($Schema->properties as $property_name => $schema) {
-                    $properties[$property_name] = [
-                        Property::type => $schema->type,
-                    ];
-                }
-            }
-            $model[Model::filename] = Classname::generate($name, '.php');
-            $model[Model::properties] = $properties;
-
-            $Models[] = $model;
+            $Models[$name] = [
+                Model::filename => Classname::generate($name, '.php'),
+                Model::properties => array_map(
+                    static fn($property) => [
+                        Property::type => $Config->properties->types[$property->format]->type
+                            ?? match ($property->type) {
+                                'number' => 'float',
+                                'integer' => 'int',
+                                'boolean' => 'bool',
+                                default => $property->type,
+                            }
+                    ],
+                    $Schema->properties
+                ),
+            ];
         }
 
         return Components::from([

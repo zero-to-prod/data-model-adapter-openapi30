@@ -11,6 +11,10 @@
         "properties": {
           "name": {
             "type": "string"
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       }
