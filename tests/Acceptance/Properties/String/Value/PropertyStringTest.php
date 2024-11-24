@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Acceptance\Properties;
+namespace Acceptance\Properties\String\Value;
 
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -10,7 +10,7 @@ use Zerotoprod\DataModelGenerator\Models\Config;
 use Zerotoprod\DataModelGenerator\Models\PropertyConfig;
 use Zerotoprod\DataModelGenerator\Models\Type;
 
-class ClassTest extends TestCase
+class PropertyStringTest extends TestCase
 {
     #[Test] public function generate(): void
     {
@@ -27,6 +27,7 @@ class ClassTest extends TestCase
                 ]
             ])
         );
+
         Engine::generate($Components);
 
         self::assertStringEqualsFile(

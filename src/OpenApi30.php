@@ -26,7 +26,7 @@ class OpenApi30
                                 'integer' => 'int',
                                 'boolean' => 'bool',
                                 default => $property->type,
-                            }
+                            }.($property->nullable ? '|null' : '')
                     ],
                     $Schema->properties
                 ),
