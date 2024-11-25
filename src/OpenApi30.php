@@ -2,11 +2,13 @@
 
 namespace Zerotoprod\DataModelAdapterOpenapi30;
 
+use Zerotoprod\DataModelAdapterOpenapi30\Resolvers\PropertyTypeResolver;
 use Zerotoprod\DataModelGenerator\Models\Components;
 use Zerotoprod\DataModelGenerator\Models\Config;
 use Zerotoprod\DataModelGenerator\Models\Model;
 use Zerotoprod\DataModelGenerator\Models\Property;
 use Zerotoprod\DataModelOpenapi30\OpenApi;
+use Zerotoprod\DataModelOpenapi30\Schema;
 use Zerotoprod\Psr4Classname\Classname;
 
 class OpenApi30
@@ -19,14 +21,8 @@ class OpenApi30
             $Models[$name] = [
                 Model::filename => Classname::generate($name, '.php'),
                 Model::properties => array_map(
-                    static fn($property) => [
-                        Property::type => $Config->properties->types[$property->format]->type
-                            ?? match ($property->type) {
-                                'number' => 'float',
-                                'integer' => 'int',
-                                'boolean' => 'bool',
-                                default => $property->type,
-                            }.($property->nullable ? '|null' : '')
+                    static fn(Schema $Schema) => [
+                        Property::type => PropertyTypeResolver::resolve($Schema, $Config),
                     ],
                     $Schema->properties
                 ),
