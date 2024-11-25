@@ -25,7 +25,8 @@ class OpenApi30
                     Model::filename => Classname::generate($name, '.php'),
                     Model::properties => array_map(
                         static fn(Schema|Reference $Schema) => [
-                            Property::comment => isset($Schema->description) ? "/** $Schema->description */":null,
+                            Property::readonly => $Config->properties->readonly ?? false,
+                            Property::comment => isset($Schema->description) ? "/** $Schema->description */" : null,
                             Property::type => $Schema instanceof Reference
                                 ? Classname::generate(basename($Schema->ref))
                                 : PropertyTypeResolver::resolve($Schema, $Config),
