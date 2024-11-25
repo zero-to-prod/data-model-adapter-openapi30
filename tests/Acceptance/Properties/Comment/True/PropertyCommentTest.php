@@ -1,14 +1,12 @@
 <?php
 
-namespace Acceptance\Properties\Comment;
+namespace Tests\Acceptance\Properties\Comment\True;
 
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Zerotoprod\DataModelAdapterOpenapi30\OpenApi30;
 use Zerotoprod\DataModelGenerator\Engine;
 use Zerotoprod\DataModelGenerator\Models\Config;
-use Zerotoprod\DataModelGenerator\Models\PropertyConfig;
-use Zerotoprod\DataModelGenerator\Models\Type;
 
 class PropertyCommentTest extends TestCase
 {
