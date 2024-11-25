@@ -6,7 +6,9 @@
   },
   "components": {
     "schemas": {
-      "User": {}
+      "User": {
+        "type": "object"
+      }
     }
   },
   "paths": {}

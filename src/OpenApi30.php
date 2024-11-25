@@ -19,17 +19,21 @@ class OpenApi30
         $OpenApi = OpenApi::from(json_decode($open_api_30_schema, true));
         $Models = [];
         foreach ($OpenApi->components->schemas as $name => $Schema) {
-            $Models[$name] = [
-                Model::filename => Classname::generate($name, '.php'),
-                Model::properties => array_map(
-                    static fn(Schema|Reference $Schema) => [
-                        Property::type => $Schema instanceof Reference
-                            ? basename($Schema->ref)
-                            : PropertyTypeResolver::resolve($Schema, $Config),
-                    ],
-                    $Schema->properties
-                ),
-            ];
+            if ($Schema->type === 'object') {
+                $Models[$name] = [
+                    Model::readonly => $Config->readonly,
+                    Model::filename => Classname::generate($name, '.php'),
+                    Model::properties => array_map(
+                        static fn(Schema|Reference $Schema) => [
+                            Property::comment => isset($Schema->description) ? "/** $Schema->description */":null,
+                            Property::type => $Schema instanceof Reference
+                                ? Classname::generate(basename($Schema->ref))
+                                : PropertyTypeResolver::resolve($Schema, $Config),
+                        ],
+                        $Schema->properties
+                    ),
+                ];
+            }
         }
 
         return Components::from([
