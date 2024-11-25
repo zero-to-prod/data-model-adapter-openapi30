@@ -28,12 +28,8 @@ class PropertyTypeResolver
         return implode('|', array_unique($types));
     }
 
-    private static function resolveType(Config $Config, Schema|Reference $Schema): ?string
+    private static function resolveType(Config $Config, Schema $Schema): ?string
     {
-        if ($Schema instanceof Reference) {
-            return null;
-        }
-
         return $Config->properties->types[$Schema->format]->type
             ?? match ($Schema->type) {
                 'number' => 'float',

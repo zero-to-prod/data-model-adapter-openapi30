@@ -8,6 +8,7 @@ use Zerotoprod\DataModelGenerator\Models\Config;
 use Zerotoprod\DataModelGenerator\Models\Model;
 use Zerotoprod\DataModelGenerator\Models\Property;
 use Zerotoprod\DataModelOpenapi30\OpenApi;
+use Zerotoprod\DataModelOpenapi30\Reference;
 use Zerotoprod\DataModelOpenapi30\Schema;
 use Zerotoprod\Psr4Classname\Classname;
 
@@ -21,8 +22,10 @@ class OpenApi30
             $Models[$name] = [
                 Model::filename => Classname::generate($name, '.php'),
                 Model::properties => array_map(
-                    static fn(Schema $Schema) => [
-                        Property::type => PropertyTypeResolver::resolve($Schema, $Config),
+                    static fn(Schema|Reference $Schema) => [
+                        Property::type => $Schema instanceof Reference
+                            ? basename($Schema->ref)
+                            : PropertyTypeResolver::resolve($Schema, $Config),
                     ],
                     $Schema->properties
                 ),
