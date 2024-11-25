@@ -21,11 +21,11 @@ class OpenApi30
         foreach ($OpenApi->components->schemas as $name => $Schema) {
             if ($Schema->type === 'object') {
                 $Models[$name] = [
-                    Model::readonly => $Config->readonly,
+                    ...$Config->toArray(),
                     Model::filename => Classname::generate($name, '.php'),
                     Model::properties => array_map(
                         static fn(Schema|Reference $Schema) => [
-                            Property::readonly => $Config->properties->readonly ?? false,
+                            ...isset($Config->properties) ? $Config->properties->toArray(): [],
                             Property::comment => isset($Schema->description) ? "/** $Schema->description */" : null,
                             Property::type => $Schema instanceof Reference
                                 ? Classname::generate(basename($Schema->ref))
