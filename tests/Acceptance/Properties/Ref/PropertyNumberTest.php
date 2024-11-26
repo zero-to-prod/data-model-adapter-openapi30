@@ -26,6 +26,7 @@ class PropertyNumberTest extends TestCase
                     ]
                 ],
                 Config::exclude_constants => true,
+                Config::namespace => 'App\\DataModels',
             ])
         );
 
@@ -35,9 +36,10 @@ class PropertyNumberTest extends TestCase
             expectedFile: self::$test_dir.'/User.php',
             actualString: <<<PHP
                 <?php
+                namespace App\DataModels;
                 class User
                 {
-                public LastName \$LastName;
+                public \App\DataModels\LastName \$LastName;
                 }
                 PHP
         );

@@ -95,6 +95,7 @@ class CommentsTest extends TestCase
                 Config::constants => [
                     ConstantConfig::exclude_comments => false
                 ],
+                Config::namespace => 'App\\DataModels'
             ])
         );
 
@@ -104,6 +105,7 @@ class CommentsTest extends TestCase
             expectedFile: self::$test_dir.'/User.php',
             actualString: <<<PHP
                 <?php
+                namespace App\DataModels;
                 class User
                 {
                 /** @see \$name */

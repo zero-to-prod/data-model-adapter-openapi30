@@ -61,7 +61,7 @@ class OpenApi30
                                 PHP
                                 : null,
                             Property::type => $Schema instanceof Reference
-                                ? Classname::generate(basename($Schema->ref))
+                                ? (isset($Config->namespace) ? '\\'.$Config->namespace.'\\' : null).Classname::generate(basename($Schema->ref))
                                 : PropertyTypeResolver::resolve($Schema, $Config),
                         ],
                         $Schema->properties
