@@ -36,9 +36,26 @@
           "city": {
             "type": "string",
             "description": "The city of the return address."
+          },
+          "files": {
+            "type": "array",
+            "description": "This array is used to specify one or more evidence files that will become part of a new evidence set associated with a payment dispute. At least one evidence file must be specified in the <strong>files</strong> array.",
+            "items": {
+              "$ref": "#/components/schemas/FileEvidence"
+            }
           }
         },
         "description": "This type is used by the payment dispute methods, and is relevant if the buyer will be returning the item to the seller."
+      },
+      "FileEvidence": {
+        "type": "object",
+        "properties": {
+          "fileId": {
+            "type": "string",
+            "description": "This field is used to identify the evidence file to be uploaded to the evidence set.<br><br> This file is created with the <a href=\"/api-docs/sell/fulfillment/resources/payment_dispute/methods/uploadEvidenceFile\" target=\"_blank \">uploadEvidenceFile</a> method and can be retrieved using the <a href=\"/api-docs/sell/fulfillment/resources/payment_dispute/methods/getPaymentDisputes\" target=\"_blank \">getPaymentDisputes</a> method."
+          }
+        },
+        "description": "This type is used to store the unique identifier of an evidence file. Evidence files are used by seller to contest a payment dispute."
       }
     }
   }

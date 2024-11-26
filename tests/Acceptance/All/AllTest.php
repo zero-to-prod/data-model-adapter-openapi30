@@ -5,6 +5,7 @@ namespace Acceptance\All;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\generated\AcceptPaymentDisputeRequest;
 use Tests\generated\ReturnAddress;
+use Tests\generated\FileEvidence;
 use Tests\TestCase;
 use Zerotoprod\DataModelAdapterOpenapi30\OpenApi30;
 use Zerotoprod\DataModelGenerator\Engine;
@@ -31,10 +32,14 @@ class AllTest extends TestCase
 
         $AcceptPaymentDisputeRequest = AcceptPaymentDisputeRequest::from([
             AcceptPaymentDisputeRequest::returnAddress => [
-                ReturnAddress::city => 'city'
+                ReturnAddress::city => 'city',
+                ReturnAddress::files => [
+                    [FileEvidence::fileId => 'fileId']
+                ]
             ]
         ]);
 
         self::assertEquals('city', $AcceptPaymentDisputeRequest->returnAddress->city);
+        self::assertEquals('fileId', $AcceptPaymentDisputeRequest->returnAddress->files[0]->fileId);
     }
 }

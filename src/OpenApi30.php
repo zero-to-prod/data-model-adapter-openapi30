@@ -50,19 +50,35 @@ class OpenApi30
                     Model::comment => isset($Schema->description) ? "/** $Schema->description */" : null,
                     Model::filename => Classname::generate($name, '.php'),
                     Model::properties => array_map(
-                        static fn(Schema|Reference $Schema) => [
-                            Property::comment => isset($Schema->description)
-                            && ($Config->comments
-                                || (isset($Config->properties->exclude_comments)
-                                    && $Config->properties->exclude_comments))
-                                ? <<<PHP
+                        static function (Schema|Reference $Schema) use ($Config) {
+                            $is_nested = $Schema->type === 'array' && $Schema->items instanceof Reference;
+                            $comment = <<<PHP
                                 /** $Schema->description */
-                                PHP
-                                : null,
-                            Property::type => $Schema instanceof Reference
-                                ? (isset($Config->namespace) ? '\\'.$Config->namespace.'\\' : null).Classname::generate(basename($Schema->ref))
-                                : PropertyTypeResolver::resolve($Schema, $Config),
-                        ],
+                                PHP;
+                            if ($is_nested) {
+                                $class = (isset($Config->namespace) ? '\\'.$Config->namespace.'\\' : null).Classname::generate(basename($Schema->items->ref));
+                                $describe =
+                                    ["#[\\Zerotoprod\\DataModel\\Describe(['cast' => [\\Zerotoprod\\DataModelHelper\\DataModelHelper::class, 'mapOf'], 'type' => $class::class])]"];
+
+                                $comment = <<<PHP
+                                /** 
+                                 * $Schema->description 
+                                 * @var array<int|string, $class>
+                                 */
+                                PHP;
+                            }
+
+                            return [
+                                Property::attributes => $describe ?? [],
+                                Property::comment => isset($Schema->description)
+                                && ($Config->comments || (isset($Config->properties->exclude_comments) && $Config->properties->exclude_comments))
+                                    ? $comment
+                                    : null,
+                                Property::type => $Schema instanceof Reference
+                                    ? (isset($Config->namespace) ? '\\'.$Config->namespace.'\\' : null).Classname::generate(basename($Schema->ref))
+                                    : PropertyTypeResolver::resolve($Schema, $Config),
+                            ];
+                        },
                         $Schema->properties
                     ),
                     Model::constants => $constants,
