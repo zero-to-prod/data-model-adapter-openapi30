@@ -51,20 +51,26 @@ class OpenApi30
                     Model::filename => Classname::generate($name, '.php'),
                     Model::properties => array_map(
                         static function (Schema|Reference $Schema) use ($Config) {
-                            $is_nested = $Schema->type === 'array' && $Schema->items instanceof Reference;
-                            $comment = <<<PHP
+                            $is_nested = isset($Schema->type) && $Schema->type === 'array' && $Schema->items instanceof Reference;
+                            $comment = isset($Schema->description)
+                            ? <<<PHP
                                 /** $Schema->description */
-                                PHP;
+                                PHP
+                            : null;
                             if ($is_nested) {
                                 $class = (isset($Config->namespace) ? '\\'.$Config->namespace.'\\' : null).Classname::generate(basename($Schema->items->ref));
                                 $describe =
                                     ["#[\\Zerotoprod\\DataModel\\Describe(['cast' => [\\Zerotoprod\\DataModelHelper\\DataModelHelper::class, 'mapOf'], 'type' => $class::class])]"];
 
-                                $comment = <<<PHP
+                                $comment = isset($Schema->description)
+                                ? <<<PHP
                                 /** 
                                  * $Schema->description 
                                  * @var array<int|string, $class>
                                  */
+                                PHP
+                                : <<<PHP
+                                /** @var array<int|string, $class> */
                                 PHP;
                             }
 
