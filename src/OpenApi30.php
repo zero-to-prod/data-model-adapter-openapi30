@@ -47,7 +47,6 @@ class OpenApi30
                 }
 
                 $Models[$name] = [
-                    ...$Config->toArray(),
                     Model::comment => isset($Schema->description) ? "/** $Schema->description */" : null,
                     Model::filename => Classname::generate($name, '.php'),
                     Model::properties => array_map(
