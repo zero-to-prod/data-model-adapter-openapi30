@@ -1,6 +1,6 @@
 <?php
 
-namespace Acceptance\Properties\MixedType\AnyOf;
+namespace Acceptance\Constants\Value;
 
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -10,7 +10,7 @@ use Zerotoprod\DataModelGenerator\Models\Config;
 use Zerotoprod\DataModelGenerator\Models\PropertyConfig;
 use Zerotoprod\DataModelGenerator\Models\Type;
 
-class PropertyStringTest extends TestCase
+class ConstantStringTest extends TestCase
 {
     #[Test] public function generate(): void
     {
@@ -23,9 +23,8 @@ class PropertyStringTest extends TestCase
                         'int32' => [
                             Type::type => 'string'
                         ],
-                    ]
-                ],
-                Config::exclude_constants => true,
+                    ],
+                ]
             ])
         );
 
@@ -37,7 +36,8 @@ class PropertyStringTest extends TestCase
                 <?php
                 class User
                 {
-                public string|int \$age;
+                public const name = 'name';
+                public string \$name;
                 }
                 PHP
         );

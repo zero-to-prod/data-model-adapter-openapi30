@@ -22,6 +22,7 @@ class VisibilityTest extends TestCase
                     Config::properties => [
                         PropertyConfig::visibility => Visibility::protected
                     ],
+                    Config::exclude_constants => true,
                 ])
             )
         );

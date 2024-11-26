@@ -21,6 +21,7 @@ class ReadonlyTest extends TestCase
                     Config::properties => [
                         PropertyConfig::readonly => true
                     ],
+                    Config::exclude_constants => true,
                 ])
             )
         );

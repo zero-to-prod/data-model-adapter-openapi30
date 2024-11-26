@@ -5,6 +5,7 @@ namespace Zerotoprod\DataModelAdapterOpenapi30;
 use Zerotoprod\DataModelAdapterOpenapi30\Resolvers\PropertyTypeResolver;
 use Zerotoprod\DataModelGenerator\Models\Components;
 use Zerotoprod\DataModelGenerator\Models\Config;
+use Zerotoprod\DataModelGenerator\Models\Constant;
 use Zerotoprod\DataModelGenerator\Models\Model;
 use Zerotoprod\DataModelGenerator\Models\Property;
 use Zerotoprod\DataModelOpenapi30\OpenApi;
@@ -20,13 +21,30 @@ class OpenApi30
         $Models = [];
         foreach ($OpenApi->components->schemas as $name => $Schema) {
             if ($Schema->type === 'object') {
+                $constants = [];
+                if (!$Config->exclude_constants) {
+                    foreach ($Schema->properties as $property_name => $property) {
+                        $constants[$property_name] = [
+                            Constant::comment => isset($Schema->description)
+                                ? <<<PHP
+                                /**
+                                 * $Schema->description
+                                 *
+                                 * @see $$name
+                                 */
+                                PHP
+                                : null,
+                            Constant::value => "'$property_name'"
+                        ];
+                    }
+                }
+
                 $Models[$name] = [
                     ...$Config->toArray(),
                     Model::comment => isset($Schema->description) ? "/** $Schema->description */" : null,
                     Model::filename => Classname::generate($name, '.php'),
                     Model::properties => array_map(
                         static fn(Schema|Reference $Schema) => [
-                            ...isset($Config->properties) ? $Config->properties->toArray(): [],
                             Property::comment => isset($Schema->description) ? "/** $Schema->description */" : null,
                             Property::type => $Schema instanceof Reference
                                 ? Classname::generate(basename($Schema->ref))
@@ -34,6 +52,7 @@ class OpenApi30
                         ],
                         $Schema->properties
                     ),
+                    Model::constants => $constants,
                 ];
             }
         }

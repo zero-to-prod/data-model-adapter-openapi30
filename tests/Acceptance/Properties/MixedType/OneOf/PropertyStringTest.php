@@ -24,7 +24,8 @@ class PropertyStringTest extends TestCase
                             Type::type => 'string'
                         ],
                     ]
-                ]
+                ],
+                Config::exclude_constants => true,
             ])
         );
 

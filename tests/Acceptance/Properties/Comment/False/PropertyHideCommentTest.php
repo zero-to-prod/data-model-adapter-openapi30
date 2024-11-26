@@ -19,7 +19,8 @@ class PropertyHideCommentTest extends TestCase
                 Config::directory => self::$test_dir,
                 Config::properties => [
                     PropertyConfig::exclude_comments => true
-                ]
+                ],
+                Config::exclude_constants => true,
             ])
         );
 

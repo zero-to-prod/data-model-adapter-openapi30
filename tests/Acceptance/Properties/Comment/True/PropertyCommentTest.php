@@ -16,6 +16,7 @@ class PropertyCommentTest extends TestCase
             file_get_contents(__DIR__.'/openapi30.json'),
             Config::from([
                 Config::directory => self::$test_dir,
+                Config::exclude_constants => true,
             ])
         );
 
