@@ -36,6 +36,7 @@ class ConstantStringTest extends TestCase
                 <?php
                 class User
                 {
+                /** @see \$name */
                 public const name = 'name';
                 public string \$name;
                 }

@@ -23,17 +23,24 @@ class OpenApi30
             if ($Schema->type === 'object') {
                 $constants = [];
                 if (!$Config->exclude_constants) {
-                    foreach ($Schema->properties as $property_name => $property) {
-                        $constants[$property_name] = [
-                            Constant::comment => isset($Schema->description)
-                                ? <<<PHP
+                    foreach ($Schema->properties as $property_name => $PropertySchema) {
+                        if ($Config->comments || (isset($Config->constants->exclude_comments) && $Config->constants->exclude_comments)) {
+                            $comment = isset($PropertySchema->description)
+                                ?
+                                <<<PHP
                                 /**
                                  * $Schema->description
                                  *
-                                 * @see $$name
+                                 * @see $$property_name
                                  */
                                 PHP
-                                : null,
+                                : <<<PHP
+                                /** @see $$property_name */
+                                PHP;
+                        }
+
+                        $constants[$property_name] = [
+                            Constant::comment => $comment ?? null,
                             Constant::value => "'$property_name'"
                         ];
                     }
@@ -45,7 +52,14 @@ class OpenApi30
                     Model::filename => Classname::generate($name, '.php'),
                     Model::properties => array_map(
                         static fn(Schema|Reference $Schema) => [
-                            Property::comment => isset($Schema->description) ? "/** $Schema->description */" : null,
+                            Property::comment => isset($Schema->description)
+                            && ($Config->comments
+                                || (isset($Config->properties->exclude_comments)
+                                    && $Config->properties->exclude_comments))
+                                ? <<<PHP
+                                /** $Schema->description */
+                                PHP
+                                : null,
                             Property::type => $Schema instanceof Reference
                                 ? Classname::generate(basename($Schema->ref))
                                 : PropertyTypeResolver::resolve($Schema, $Config),
