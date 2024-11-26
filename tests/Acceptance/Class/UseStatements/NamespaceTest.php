@@ -20,7 +20,7 @@ class NamespaceTest extends TestCase
                     Config::directory => self::$test_dir,
                     Config::model => [
                         ModelConfig::use_statements => [
-                            'use \\Zerotoprod\\DataModel;'
+                            'use \\Zerotoprod\\DataModel\\DataModel;'
                         ]
                     ],
                 ])
@@ -33,7 +33,7 @@ class NamespaceTest extends TestCase
                 <?php
                 class User
                 {
-                use \Zerotoprod\DataModel;
+                use \Zerotoprod\DataModel\DataModel;
                 }
                 PHP
         );

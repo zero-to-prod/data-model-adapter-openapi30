@@ -1,0 +1,45 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Fulfillment API",
+    "description": "Use the Fulfillment API to complete the process of packaging, addressing, handling, and shipping each order on behalf of the seller, in accordance with the payment method and timing specified at checkout.",
+    "contact": {
+      "name": "eBay Inc."
+    },
+    "license": {
+      "name": "eBay API License Agreement",
+      "url": "https://go.developer.ebay.com/api-license-agreement"
+    },
+    "version": "v1.20.4"
+  },
+  "servers": [],
+  "paths": {},
+  "components": {
+    "schemas": {
+      "AcceptPaymentDisputeRequest": {
+        "type": "object",
+        "properties": {
+          "returnAddress": {
+            "$ref": "#/components/schemas/ReturnAddress"
+          },
+          "revision": {
+            "type": "integer",
+            "description": "This integer value indicates the revision number of the payment dispute. This field is required. The current <strong>revision</strong> number for a payment dispute can be retrieved with the <strong>getPaymentDispute</strong> method. Each time an action is taken against a payment dispute, this integer value increases by 1.",
+            "format": "int32"
+          }
+        },
+        "description": "This type is used by base request of the <strong>acceptPaymentDispute</strong> method."
+      },
+      "ReturnAddress": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string",
+            "description": "The city of the return address."
+          }
+        },
+        "description": "This type is used by the payment dispute methods, and is relevant if the buyer will be returning the item to the seller."
+      }
+    }
+  }
+}
