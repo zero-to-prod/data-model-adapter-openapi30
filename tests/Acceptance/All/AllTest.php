@@ -4,6 +4,7 @@ namespace Acceptance\All;
 
 use PHPUnit\Framework\Attributes\Test;
 use Tests\generated\AcceptPaymentDisputeRequest;
+use Tests\generated\OrderStatus;
 use Tests\generated\ReturnAddress;
 use Tests\generated\FileEvidence;
 use Tests\TestCase;
@@ -34,12 +35,14 @@ class AllTest extends TestCase
             AcceptPaymentDisputeRequest::returnAddress => [
                 ReturnAddress::city => 'city',
                 ReturnAddress::files => [
-                    [FileEvidence::fileId => 'fileId']
-                ]
+                    [FileEvidence::fileId => 'fileId'],
+                ],
+                ReturnAddress::OrderStatus => OrderStatus::Unshipped
             ]
         ]);
 
         self::assertEquals('city', $AcceptPaymentDisputeRequest->returnAddress->city);
         self::assertEquals('fileId', $AcceptPaymentDisputeRequest->returnAddress->files[0]->fileId);
+        self::assertEquals(OrderStatus::Unshipped, $AcceptPaymentDisputeRequest->returnAddress->OrderStatus);
     }
 }

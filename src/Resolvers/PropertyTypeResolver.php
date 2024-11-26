@@ -7,18 +7,22 @@ use Zerotoprod\DataModelOpenapi30\Schema;
 
 class PropertyTypeResolver
 {
-    public static function resolve(Schema $Schema, Config $Config): string
+    public static function resolve(Schema $Schema, Config $Config, ?string $enum = null): string
     {
-        $types = array_filter(
-            array_map(
-                static fn(Schema $Schema) => self::resolveType($Config, $Schema),
-                array_merge(
-                    [$Schema],
-                    $Schema->oneOf ?? [],
-                    $Schema->anyOf ?? []
+        if ($enum) {
+            $types = [$enum];
+        } else {
+            $types = array_filter(
+                array_map(
+                    static fn(Schema $Schema) => self::resolveType($Config, $Schema),
+                    array_merge(
+                        [$Schema],
+                        $Schema->oneOf ?? [],
+                        $Schema->anyOf ?? []
+                    )
                 )
-            )
-        );
+            );
+        }
 
         if ($Schema->nullable) {
             $types[] = 'null';

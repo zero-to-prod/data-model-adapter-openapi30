@@ -43,6 +43,20 @@
             "items": {
               "$ref": "#/components/schemas/FileEvidence"
             }
+          },
+          "OrderStatus": {
+            "type": "string",
+            "description": "The current order status.",
+            "enum": [
+              "Pending",
+              "Unshipped",
+              "PartiallyShipped",
+              "Shipped",
+              "Canceled",
+              "Unfulfillable",
+              "InvoiceUnconfirmed",
+              "PendingAvailability"
+            ]
           }
         },
         "description": "This type is used by the payment dispute methods, and is relevant if the buyer will be returning the item to the seller."
