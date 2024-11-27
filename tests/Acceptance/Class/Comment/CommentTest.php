@@ -32,4 +32,27 @@ class CommentTest extends TestCase
                 PHP
         );
     }
+
+    #[Test] public function disable_comments(): void
+    {
+        Engine::generate(
+            OpenApi30::adapt(
+                file_get_contents(__DIR__.'/openapi30.json'),
+                Config::from([
+                    Config::directory => self::$test_dir,
+                    Config::comments => false,
+                ])
+            )
+        );
+
+        self::assertStringEqualsFile(
+            expectedFile: self::$test_dir.'/User.php',
+            actualString: <<<PHP
+                <?php
+                class User
+                {
+                }
+                PHP
+        );
+    }
 }
