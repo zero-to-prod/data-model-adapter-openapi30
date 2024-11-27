@@ -80,10 +80,10 @@ class OpenApi30
                                         PHP;
                                 }
                                 if (isset($Schema->type) && $Schema->type === 'string' && !empty($Schema->enum)) {
-                                    $enum = (isset($Config->namespace) ? '\\'.$Config->namespace.'\\' : null).Classname::generate(basename($property_name));
+                                    $enum = (isset($Config->namespace) ? '\\'.$Config->namespace.'\\' : null).Classname::generate(basename($property_name)).'Enum';
                                     $Enums[$property_name] = [
                                         Enum::comment => isset($Schema->description) ? "/** $Schema->description */" : null,
-                                        Enum::filename => Classname::generate($property_name, '.php'),
+                                        Enum::filename => Classname::generate($property_name, 'Enum.php'),
                                         Enum::backed_type => BackedEnumType::string,
                                         Enum::cases => array_map(
                                             static fn($value) => [
