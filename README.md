@@ -6,6 +6,7 @@
 [![Packagist Version](https://img.shields.io/packagist/v/zero-to-prod/data-model-adapter-openapi30?color=f28d1a)](https://packagist.org/packages/zero-to-prod/data-model-adapter-openapi30)
 [![License](https://img.shields.io/packagist/l/zero-to-prod/data-model-adapter-openapi30?color=red)](https://github.com/zero-to-prod/data-model-adapter-openapi30/blob/main/LICENSE.md)
 [![wakatime](https://wakatime.com/badge/github/zero-to-prod/data-model-adapter-openapi30.svg)](https://wakatime.com/badge/github/zero-to-prod/data-model-adapter-openapi30)
+[![Hits-of-Code](https://hitsofcode.com/github/zero-to-prod//data-model-adapter-openapi30?branch=main)](https://hitsofcode.com/github/zero-to-prod//data-model-adapter-openapi30/view?branch=main)
 
 ## Installation
 You can install this package via Composer.
