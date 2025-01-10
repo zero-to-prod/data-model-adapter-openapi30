@@ -8,16 +8,40 @@
 [![wakatime](https://wakatime.com/badge/github/zero-to-prod/data-model-adapter-openapi30.svg)](https://wakatime.com/badge/github/zero-to-prod/data-model-adapter-openapi30)
 [![Hits-of-Code](https://hitsofcode.com/github/zero-to-prod/data-model-adapter-openapi30?branch=main)](https://hitsofcode.com/github/zero-to-prod/data-model-adapter-openapi30/view?branch=main)
 
+## Contents
+
+- [Introduction](#introduction)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Local Development](#local-development)
+    - [Prerequisites](#prerequisites)
+    - [Initializing](#initializing)
+    - [Testing](#testing)
+    - [Configuration](#configuration)
+- [Contributing](#contributing)
+
+## Introduction
+
+An adapter for the OpenAPI 3.0 for [DataModelGenerator](https://github.com/zero-to-prod/data-model-generator).
+
+## Requirements
+
+- PHP 8.1 or higher.
+
 ## Installation
+
 You can install this package via Composer.
 
 ```shell
 composer require zero-to-prod/data-model-adapter-openapi30
 ```
 
+This will add the package to your project’s dependencies and create an autoloader entry for it.
+
 ## Local Development
 
-This project provides a convenient [dock](https://github.com/zero-to-prod/dock) script to simplify local development workflows within Docker containers.
+This project provides a convenient [dock](https://github.com/zero-to-prod/dock) script to simplify local development workflows within Docker
+containers.
 
 You can use this script to initialize the project, manage Composer dependencies, and run tests in a consistent PHP environment.
 
@@ -68,7 +92,7 @@ If the `.env` file does not exist, run the `sh dock init` command to create one 
 ## Contributing
 
 Contributions, issues, and feature requests are welcome!
-Feel free to check the [issues](https://github.com/zero-to-prod/dynamic-setter/issues) page if you want to contribute.
+Feel free to check the [issues](https://github.com/zero-to-prod/data-model-adapter-openapi30/issues) page if you want to contribute.
 
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature-branch`).
