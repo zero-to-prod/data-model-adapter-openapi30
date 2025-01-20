@@ -29,15 +29,15 @@ class OpenApi30
                     $comment = isset($PropertySchema->description)
                         ?
                         <<<PHP
-                                /**
-                                 * $Schema->description
-                                 *
-                                 * @see $$property_name
-                                 */
-                                PHP
+                        /**
+                         * $PropertySchema->description
+                         *
+                         * @see $$property_name
+                         */
+                        PHP
                         : <<<PHP
-                                /** @see $$property_name */
-                                PHP;
+                        /** @see $$property_name */
+                        PHP;
 
                     $constants[$property_name] = [
                         Constant::comment => $comment,
