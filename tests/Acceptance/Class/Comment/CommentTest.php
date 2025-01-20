@@ -7,18 +7,20 @@ use Tests\TestCase;
 use Zerotoprod\DataModelAdapterOpenapi30\OpenApi30;
 use Zerotoprod\DataModelGenerator\Engine;
 use Zerotoprod\DataModelGenerator\Models\Config;
+use Zerotoprod\DataModelGenerator\Models\ModelConfig;
 
 class CommentTest extends TestCase
 {
     #[Test] public function generate(): void
     {
         Engine::generate(
-            OpenApi30::adapt(
-                file_get_contents(__DIR__.'/openapi30.json'),
-                Config::from([
-                    Config::directory => self::$test_dir,
-                ])
-            )
+            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
+            Config::from([
+                Config::directory => self::$test_dir,
+                Config::model => [
+                    ModelConfig::comments => true
+                ]
+            ])
         );
 
         self::assertStringEqualsFile(
@@ -36,13 +38,11 @@ class CommentTest extends TestCase
     #[Test] public function disable_comments(): void
     {
         Engine::generate(
-            OpenApi30::adapt(
-                file_get_contents(__DIR__.'/openapi30.json'),
-                Config::from([
-                    Config::directory => self::$test_dir,
-                    Config::comments => false,
-                ])
-            )
+            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
+            Config::from([
+                Config::directory => self::$test_dir,
+                Config::model => []
+            ])
         );
 
         self::assertStringEqualsFile(

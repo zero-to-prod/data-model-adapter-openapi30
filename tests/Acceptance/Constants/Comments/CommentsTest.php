@@ -8,29 +8,23 @@ use Zerotoprod\DataModelAdapterOpenapi30\OpenApi30;
 use Zerotoprod\DataModelGenerator\Engine;
 use Zerotoprod\DataModelGenerator\Models\Config;
 use Zerotoprod\DataModelGenerator\Models\ConstantConfig;
+use Zerotoprod\DataModelGenerator\Models\ModelConfig;
 use Zerotoprod\DataModelGenerator\Models\PropertyConfig;
-use Zerotoprod\DataModelGenerator\Models\Type;
 
 class CommentsTest extends TestCase
 {
     #[Test] public function generate(): void
     {
-        $Components = OpenApi30::adapt(
-            file_get_contents(__DIR__.'/openapi30.json'),
+        Engine::generate(
+            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
             Config::from([
                 Config::directory => self::$test_dir,
-                Config::properties => [
-                    PropertyConfig::types => [
-                        'int32' => [
-                            Type::type => 'string'
-                        ],
-                    ],
-                ],
-                Config::comments => false,
+                Config::model => [
+                    ModelConfig::constants => [],
+                    ModelConfig::properties => []
+                ]
             ])
         );
-
-        Engine::generate($Components);
 
         self::assertStringEqualsFile(
             expectedFile: self::$test_dir.'/User.php',
@@ -47,24 +41,16 @@ class CommentsTest extends TestCase
 
     #[Test] public function disable_comment_constant(): void
     {
-        $Components = OpenApi30::adapt(
-            file_get_contents(__DIR__.'/openapi30.json'),
+        Engine::generate(
+            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
             Config::from([
                 Config::directory => self::$test_dir,
-                Config::properties => [
-                    PropertyConfig::types => [
-                        'int32' => [
-                            Type::type => 'string'
-                        ],
-                    ],
-                ],
-                Config::constants => [
-                    ConstantConfig::exclude_comments => true
-                ],
+                Config::model => [
+                    ModelConfig::constants => [],
+                    ModelConfig::properties => []
+                ]
             ])
         );
-
-        Engine::generate($Components);
 
         self::assertStringEqualsFile(
             expectedFile: self::$test_dir.'/User.php',
@@ -81,25 +67,19 @@ class CommentsTest extends TestCase
 
     #[Test] public function enable_comment_constant(): void
     {
-        $Components = OpenApi30::adapt(
-            file_get_contents(__DIR__.'/openapi30.json'),
+        Engine::generate(
+            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
             Config::from([
+                Config::namespace => 'App\\DataModels',
                 Config::directory => self::$test_dir,
-                Config::properties => [
-                    PropertyConfig::types => [
-                        'int32' => [
-                            Type::type => 'string'
-                        ],
+                Config::model => [
+                    ModelConfig::constants => [
+                        ConstantConfig::comments => true,
                     ],
-                ],
-                Config::constants => [
-                    ConstantConfig::exclude_comments => false
-                ],
-                Config::namespace => 'App\\DataModels'
+                    ModelConfig::properties => []
+                ]
             ])
         );
-
-        Engine::generate($Components);
 
         self::assertStringEqualsFile(
             expectedFile: self::$test_dir.'/User.php',
@@ -118,25 +98,18 @@ class CommentsTest extends TestCase
 
     #[Test] public function enable_comment_config(): void
     {
-        $Components = OpenApi30::adapt(
-            file_get_contents(__DIR__.'/openapi30.json'),
+        Engine::generate(
+            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
             Config::from([
                 Config::directory => self::$test_dir,
-                Config::properties => [
-                    PropertyConfig::types => [
-                        'int32' => [
-                            Type::type => 'string'
-                        ],
+                Config::model => [
+                    ModelConfig::constants => [
+                        ConstantConfig::comments => true,
                     ],
-                ],
-                ConstantConfig::exclude_comments => true,
-                Config::constants => [
-                    ConstantConfig::exclude_comments => false
-                ],
+                    ModelConfig::properties => []
+                ]
             ])
         );
-
-        Engine::generate($Components);
 
         self::assertStringEqualsFile(
             expectedFile: self::$test_dir.'/User.php',

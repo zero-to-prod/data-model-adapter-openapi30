@@ -14,17 +14,13 @@ class NamespaceTest extends TestCase
     #[Test] public function generate(): void
     {
         Engine::generate(
-            OpenApi30::adapt(
-                file_get_contents(__DIR__.'/openapi30.json'),
-                Config::from([
-                    Config::directory => self::$test_dir,
-                    Config::model => [
-                        ModelConfig::use_statements => [
-                            'use \\Zerotoprod\\DataModel\\DataModel;'
-                        ]
-                    ],
-                ])
-            )
+            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
+            Config::from([
+                Config::directory => self::$test_dir,
+                Config::model => [
+                    ModelConfig::use_statements => ['use \\Zerotoprod\\DataModel\\DataModel;']
+                ]
+            ])
         );
 
         self::assertStringEqualsFile(

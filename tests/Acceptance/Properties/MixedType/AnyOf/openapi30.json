@@ -12,11 +12,10 @@
           "age": {
             "anyOf": [
               {
-                "type": "integer",
-                "format": "int32"
+                "type": "integer"
               },
               {
-                "type": "integer"
+                "type": "number"
               }
             ]
           }

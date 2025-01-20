@@ -7,6 +7,7 @@ use Tests\TestCase;
 use Zerotoprod\DataModelAdapterOpenapi30\OpenApi30;
 use Zerotoprod\DataModelGenerator\Engine;
 use Zerotoprod\DataModelGenerator\Models\Config;
+use Zerotoprod\DataModelGenerator\Models\ModelConfig;
 use Zerotoprod\DataModelGenerator\Models\PropertyConfig;
 
 class ReadonlyTest extends TestCase
@@ -14,16 +15,19 @@ class ReadonlyTest extends TestCase
     #[Test] public function generate(): void
     {
         Engine::generate(
-            OpenApi30::adapt(
-                file_get_contents(__DIR__.'/openapi30.json'),
-                Config::from([
-                    Config::directory => self::$test_dir,
-                    Config::properties => [
-                        PropertyConfig::readonly => true
-                    ],
-                    Config::exclude_constants => true,
-                ])
-            )
+            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
+            Config::from([
+                Config::directory => self::$test_dir,
+                Config::model => [
+                    ModelConfig::properties => [
+                        PropertyConfig::comments => true,
+                        PropertyConfig::readonly => true,
+                        PropertyConfig::types => [
+                            'number' => 'float'
+                        ]
+                    ]
+                ]
+            ])
         );
 
         self::assertStringEqualsFile(
