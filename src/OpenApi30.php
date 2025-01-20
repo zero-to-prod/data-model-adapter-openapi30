@@ -53,28 +53,27 @@ class OpenApi30
                     array_keys($Schema->properties),
                     array_map(
                         static function (string $property_name, Schema|Reference $Schema) use (&$Enums) {
-                            $is_nested = isset($Schema->type, $Schema->items->ref) && $Schema->type === 'array';
-                            $comment = isset($Schema->description)
-                                ? <<<PHP
-                                /** $Schema->description */
-                                PHP
-                                : null;
-                            if ($is_nested) {
-                                $class = Classname::generate(basename($Schema->items->ref));
-                                $describe =
-                                    ["#[\\Zerotoprod\\DataModel\\Describe(['cast' => [\\Zerotoprod\\DataModelHelper\\DataModelHelper::class, 'mapOf'], 'type' => $class::class])]"];
+                            $propertyData = [
+                                Property::attributes => [],
+                                Property::comment => null,
+                                Property::type => null,
+                            ];
 
-                                $comment = $Schema->description
-                                    ? <<<PHP
-                                        /** 
-                                         * $Schema->description 
-                                         * @var array<int|string, $class>
-                                         */
-                                        PHP
-                                    : <<<PHP
-                                        /** @var array<int|string, $class> */
-                                        PHP;
+                            if (isset($Schema->type, $Schema->items->ref) && $Schema->type === 'array') {
+                                $class = Classname::generate(basename($Schema->items->ref));
+                                $propertyData[Property::attributes] = [
+                                    "#[\\Zerotoprod\\DataModel\\Describe(['cast' => [\\Zerotoprod\\DataModelHelper\\DataModelHelper::class, 'mapOf'], 'type' => $class::class])]"
+                                ];
+
+                                $docBlockParts = [];
+                                if ($Schema->description) {
+                                    $docBlockParts[] = $Schema->description;
+                                }
+                                $docBlockParts[] = "@var array<int|string, $class>";
+
+                                $propertyData[Property::comment] = "/** \n * ".implode("\n * ", $docBlockParts)."\n */";
                             }
+
                             if (isset($Schema->type) && $Schema->type === 'string' && $Schema->enum) {
                                 $enum = Classname::generate(basename($property_name)).'Enum';
                                 $Enums[$property_name] = [
@@ -86,21 +85,24 @@ class OpenApi30
                                             EnumCase::name => $value,
                                             EnumCase::value => "'$value'"
                                         ],
-                                        $Schema->enum,
+                                        $Schema->enum
                                     ),
                                 ];
                             }
-                            return [
-                                Property::attributes => $describe ?? [],
-                                Property::comment => $comment,
-                                Property::type => isset($Schema->ref)
-                                    ? [Classname::generate(basename($Schema->ref))]
-                                    : PropertyTypeResolver::resolve($Schema, $enum ?? null),
-                            ];
+
+                            if (!$propertyData[Property::comment] && isset($Schema->description)) {
+                                $propertyData[Property::comment] = "/** $Schema->description */";
+                            }
+
+                            $propertyData[Property::type] = isset($Schema->ref)
+                                ? [Classname::generate(basename($Schema->ref))]
+                                : PropertyTypeResolver::resolve($Schema, $enum ?? null);
+
+                            return $propertyData;
                         },
                         array_keys($Schema->properties),
                         $Schema->properties
-                    ),
+                    )
                 ),
                 Model::constants => $constants,
             ];
