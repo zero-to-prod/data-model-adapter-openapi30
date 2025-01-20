@@ -9,7 +9,6 @@ use Zerotoprod\DataModelGenerator\Engine;
 use Zerotoprod\DataModelGenerator\Models\Config;
 use Zerotoprod\DataModelGenerator\Models\ModelConfig;
 use Zerotoprod\DataModelGenerator\Models\PropertyConfig;
-use Zerotoprod\DataModelGenerator\Models\Type;
 
 class PropertyStringTest extends TestCase
 {

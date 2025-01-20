@@ -2,7 +2,6 @@
 
 namespace Zerotoprod\DataModelAdapterOpenapi30\Resolvers;
 
-use Zerotoprod\DataModelGenerator\Models\Config;
 use Zerotoprod\DataModelOpenapi30\Reference;
 use Zerotoprod\DataModelOpenapi30\Schema;
 use Zerotoprod\Psr4Classname\Classname;

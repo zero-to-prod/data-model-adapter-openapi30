@@ -9,7 +9,6 @@ use Zerotoprod\DataModelGenerator\Engine;
 use Zerotoprod\DataModelGenerator\Models\Config;
 use Zerotoprod\DataModelGenerator\Models\ConstantConfig;
 use Zerotoprod\DataModelGenerator\Models\ModelConfig;
-use Zerotoprod\DataModelGenerator\Models\PropertyConfig;
 
 class CommentsTest extends TestCase
 {

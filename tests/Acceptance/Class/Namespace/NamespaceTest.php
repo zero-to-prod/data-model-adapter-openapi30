@@ -7,7 +7,6 @@ use Tests\TestCase;
 use Zerotoprod\DataModelAdapterOpenapi30\OpenApi30;
 use Zerotoprod\DataModelGenerator\Engine;
 use Zerotoprod\DataModelGenerator\Models\Config;
-use Zerotoprod\DataModelGenerator\Models\ModelConfig;
 
 class NamespaceTest extends TestCase
 {
