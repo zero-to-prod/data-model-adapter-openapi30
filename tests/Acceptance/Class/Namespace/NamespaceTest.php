@@ -7,19 +7,19 @@ use Tests\TestCase;
 use Zerotoprod\DataModelAdapterOpenapi30\OpenApi30;
 use Zerotoprod\DataModelGenerator\Engine;
 use Zerotoprod\DataModelGenerator\Models\Config;
+use Zerotoprod\DataModelGenerator\Models\ModelConfig;
 
 class NamespaceTest extends TestCase
 {
     #[Test] public function generate(): void
     {
         Engine::generate(
-            OpenApi30::adapt(
-                file_get_contents(__DIR__.'/openapi30.json'),
-                Config::from([
-                    Config::directory => self::$test_dir,
-                    Config::namespace => 'App\\DataModels',
-                ])
-            )
+            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
+            Config::from([
+                Config::directory => self::$test_dir,
+                Config::namespace => 'App\\DataModels',
+                Config::model => []
+            ])
         );
 
         self::assertStringEqualsFile(
