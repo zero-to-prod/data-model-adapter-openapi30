@@ -23,8 +23,8 @@ class OpenApi30
         $Models = [];
         $Enums = [];
         foreach ($OpenApi->components->schemas as $name => $Schema) {
+            $constants = [];
             if ($Schema->type === 'object') {
-                $constants = [];
                 foreach ($Schema->properties as $property_name => $PropertySchema) {
                     $comment = isset($PropertySchema->description)
                         ?
@@ -53,8 +53,8 @@ class OpenApi30
                     array_keys($Schema->properties),
                     array_map(
                         static function (string $property_name, Schema|Reference $Schema) use (&$Enums) {
-                            $is_nested = isset($Schema->type) && $Schema->type === 'array' && $Schema instanceof Reference;
-                            $comment = $Schema->description
+                            $is_nested = isset($Schema->type, $Schema->items->ref) && $Schema->type === 'array';
+                            $comment = isset($Schema->description)
                                 ? <<<PHP
                                 /** $Schema->description */
                                 PHP
@@ -75,7 +75,7 @@ class OpenApi30
                                         /** @var array<int|string, $class> */
                                         PHP;
                             }
-                            if ($Schema->type === 'string' && $Schema->enum) {
+                            if (isset($Schema->type) && $Schema->type === 'string' && $Schema->enum) {
                                 $enum = Classname::generate(basename($property_name)).'Enum';
                                 $Enums[$property_name] = [
                                     Enum::comment => $Schema->description ? "/** $Schema->description */" : null,
@@ -92,9 +92,7 @@ class OpenApi30
                             }
                             return [
                                 Property::attributes => $describe ?? [],
-                                Property::comment => $Schema->description
-                                    ? $comment
-                                    : null,
+                                Property::comment => $comment,
                                 Property::type => isset($Schema->ref)
                                     ? [Classname::generate(basename($Schema->ref))]
                                     : PropertyTypeResolver::resolve($Schema, $enum ?? null),
