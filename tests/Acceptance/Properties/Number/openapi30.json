@@ -13,8 +13,7 @@
             "type": "number"
           },
           "age2": {
-            "type": "number",
-            "format": "int32"
+            "type": "string"
           }
         }
       }
