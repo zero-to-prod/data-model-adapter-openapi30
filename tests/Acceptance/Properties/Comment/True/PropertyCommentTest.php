@@ -15,7 +15,7 @@ class PropertyCommentTest extends TestCase
     #[Test] public function generate(): void
     {
         Engine::generate(
-            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
+            OpenApi30::adapt(file_get_contents(__DIR__.'/schema.json')),
             Config::from([
                 Config::directory => self::$test_dir,
                 Config::model => [

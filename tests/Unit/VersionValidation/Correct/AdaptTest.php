@@ -15,7 +15,7 @@ class AdaptTest extends TestCase
         self::assertTrue(
             is_a(
                 object_or_class: OpenApi30::adapt(
-                    file_get_contents(__DIR__.'/openapi30.json'),
+                    file_get_contents(__DIR__.'/schema.json'),
                     Config::from([
                         Config::directory => self::$test_dir
                     ])

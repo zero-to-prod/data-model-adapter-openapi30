@@ -15,7 +15,7 @@ class CommentsTest extends TestCase
     #[Test] public function generate(): void
     {
         Engine::generate(
-            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
+            OpenApi30::adapt(file_get_contents(__DIR__.'/schema.json')),
             Config::from([
                 Config::directory => self::$test_dir,
                 Config::model => [
@@ -41,7 +41,7 @@ class CommentsTest extends TestCase
     #[Test] public function disable_comment_constant(): void
     {
         Engine::generate(
-            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
+            OpenApi30::adapt(file_get_contents(__DIR__.'/schema.json')),
             Config::from([
                 Config::directory => self::$test_dir,
                 Config::model => [
@@ -67,7 +67,7 @@ class CommentsTest extends TestCase
     #[Test] public function enable_comment_constant(): void
     {
         Engine::generate(
-            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
+            OpenApi30::adapt(file_get_contents(__DIR__.'/schema.json')),
             Config::from([
                 Config::namespace => 'App\\DataModels',
                 Config::directory => self::$test_dir,
@@ -98,7 +98,7 @@ class CommentsTest extends TestCase
     #[Test] public function enable_comment_config(): void
     {
         Engine::generate(
-            OpenApi30::adapt(file_get_contents(__DIR__.'/openapi30.json')),
+            OpenApi30::adapt(file_get_contents(__DIR__.'/schema.json')),
             Config::from([
                 Config::directory => self::$test_dir,
                 Config::model => [
