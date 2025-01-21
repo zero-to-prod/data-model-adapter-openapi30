@@ -56,7 +56,7 @@ class OpenApi30
                             $propertyData = [
                                 Property::attributes => [],
                                 Property::comment => null,
-                                Property::type => null,
+                                Property::types => null,
                             ];
 
                             if (isset($Schema->type, $Schema->items->ref) && $Schema->type === 'array') {
@@ -94,7 +94,7 @@ class OpenApi30
                                 $propertyData[Property::comment] = "/** $Schema->description */";
                             }
 
-                            $propertyData[Property::type] = isset($Schema->ref)
+                            $propertyData[Property::types] = isset($Schema->ref)
                                 ? [Classname::generate(basename($Schema->ref))]
                                 : PropertyTypeResolver::resolve($Schema, $enum ?? null);
 

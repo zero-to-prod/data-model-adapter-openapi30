@@ -17,8 +17,8 @@ class CommentsTest extends TestCase
         Engine::generate(
             OpenApi30::adapt(file_get_contents(__DIR__.'/schema.json')),
             Config::from([
-                Config::directory => self::$test_dir,
                 Config::model => [
+                    ModelConfig::directory => self::$test_dir,
                     ModelConfig::constants => [
                         ConstantConfig::comments => true,
                     ],
@@ -50,8 +50,8 @@ class CommentsTest extends TestCase
         Engine::generate(
             OpenApi30::adapt(file_get_contents(__DIR__.'/schema.json')),
             Config::from([
-                Config::directory => self::$test_dir,
                 Config::model => [
+                    ModelConfig::directory => self::$test_dir,
                     ModelConfig::constants => [
                         ConstantConfig::comments => false,
                     ],

@@ -7,6 +7,7 @@ use Tests\TestCase;
 use Zerotoprod\DataModelAdapterOpenapi30\OpenApi30;
 use Zerotoprod\DataModelGenerator\Engine;
 use Zerotoprod\DataModelGenerator\Models\Config;
+use Zerotoprod\DataModelGenerator\Models\ModelConfig;
 
 class NamespaceTest extends TestCase
 {
@@ -15,9 +16,10 @@ class NamespaceTest extends TestCase
         Engine::generate(
             OpenApi30::adapt(file_get_contents(__DIR__.'/schema.json')),
             Config::from([
-                Config::directory => self::$test_dir,
-                Config::namespace => 'App\\DataModels',
-                Config::model => []
+                Config::model => [
+                    ModelConfig::directory => self::$test_dir,
+                    ModelConfig::namespace => 'App\\DataModels',
+                ]
             ])
         );
 

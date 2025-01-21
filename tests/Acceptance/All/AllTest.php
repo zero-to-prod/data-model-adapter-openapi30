@@ -22,9 +22,9 @@ class AllTest extends TestCase
         Engine::generate(
             OpenApi30::adapt(file_get_contents(__DIR__.'/schema.json')),
             Config::from([
-                Config::directory => self::$test_dir,
-                Config::namespace => 'Tests\\generated',
                 Config::model => [
+                    ModelConfig::directory => self::$test_dir,
+                    ModelConfig::namespace => 'Tests\\generated',
                     ModelConfig::constants => [
                         ConstantConfig::comments => true,
                     ],
