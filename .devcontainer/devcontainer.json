@@ -10,5 +10,5 @@
       "installZsh": false
     }
   },
-  "postCreateCommand": "cat .devcontainer/bashrc >> ~/.bashrc"
+  "postCreateCommand": "cat .devcontainer/.bashrc >> ~/.bashrc"
 }
