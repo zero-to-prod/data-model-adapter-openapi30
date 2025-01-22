@@ -1,0 +1,38 @@
+{
+  "name": "Docker in Docker",
+  "dockerFile": "Dockerfile",
+  "runArgs": ["--privileged", "--init"],
+  "overrideCommand": false,
+  "containerEnv": {
+    "DOCKER_BUILDKIT": "1"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true,
+      "dockerDashComposeVersion": "v2",
+      "enableNonRootDocker": true
+    }
+  },
+  "initializeCommand": {
+    "pre-commit": "chmod +x .devcontainer/docker-init.sh"
+  },
+  "updateContentCommand": "git config --global --add safe.directory /app",
+  "postStartCommand": [
+    "sudo chown vscode:vscode /var/run/docker.sock || true",
+    "git config --global --add safe.directory /app"
+  ],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached",
+  "workspaceFolder": "/app",
+  "remoteUser": "vscode"
+}
