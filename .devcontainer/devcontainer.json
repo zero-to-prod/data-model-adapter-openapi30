@@ -6,9 +6,8 @@
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "version": "latest",
       "enableNonRootDocker": true,
-      "moby": true,
-      "installZsh": false
+      "moby": true
     }
   },
-  "postCreateCommand": "cat .devcontainer/.bashrc >> ~/.bashrc"
+  "postCreateCommand": ".devcontainer/postCreateCommand.sh"
 }
