@@ -41,7 +41,8 @@ class OpenApi30
 
                     $constants[$property_name] = [
                         Constant::comment => $comment,
-                        Constant::value => "'$property_name'"
+                        Constant::value => "'$property_name'",
+                        Constant::type => 'string'
                     ];
                 }
             }
