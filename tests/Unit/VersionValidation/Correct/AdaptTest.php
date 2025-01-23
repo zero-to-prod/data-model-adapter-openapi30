@@ -14,7 +14,7 @@ class AdaptTest extends TestCase
         self::assertTrue(
             is_a(
                 object_or_class: OpenApi30::adapt(
-                    file_get_contents(__DIR__.'/schema.json'),
+                    json_decode(file_get_contents(__DIR__.'/schema.json'), true),
                 ),
                 class: Components::class
             )

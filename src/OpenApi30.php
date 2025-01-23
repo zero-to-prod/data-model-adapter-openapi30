@@ -17,9 +17,9 @@ use Zerotoprod\Psr4Classname\Classname;
 
 class OpenApi30
 {
-    public static function adapt(string $open_api_30_schema): Components
+    public static function adapt(array $open_api_30_schema): Components
     {
-        $OpenApi = OpenApi::from(json_decode($open_api_30_schema, true));
+        $OpenApi = OpenApi::from($open_api_30_schema);
         $Models = [];
         $Enums = [];
         foreach ($OpenApi->components->schemas as $name => $Schema) {
