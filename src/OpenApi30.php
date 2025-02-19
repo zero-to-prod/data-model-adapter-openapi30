@@ -15,8 +15,16 @@ use Zerotoprod\DataModelOpenapi30\Reference;
 use Zerotoprod\DataModelOpenapi30\Schema;
 use Zerotoprod\Psr4Classname\Classname;
 
+/**
+ * An adapter for the OpenAPI 3.0 for DataModelGenerator
+ *
+ * @link https://github.com/zero-to-prod/data-model-adapter-openapi30
+ */
 class OpenApi30
 {
+    /**
+     * @link https://github.com/zero-to-prod/data-model-adapter-openapi30
+     */
     public static function adapt(array $open_api_30_schema): Components
     {
         $OpenApi = OpenApi::from($open_api_30_schema);

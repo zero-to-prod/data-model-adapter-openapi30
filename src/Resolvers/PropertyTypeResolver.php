@@ -6,8 +6,14 @@ use Zerotoprod\DataModelOpenapi30\Reference;
 use Zerotoprod\DataModelOpenapi30\Schema;
 use Zerotoprod\Psr4Classname\Classname;
 
+/**
+ * @link https://github.com/zero-to-prod/data-model-adapter-openapi30
+ */
 class PropertyTypeResolver
 {
+    /**
+     * @link https://github.com/zero-to-prod/data-model-adapter-openapi30
+     */
     public static function resolve(Reference|Schema $Schema, ?string $enum = null): array
     {
         if ($enum) {
