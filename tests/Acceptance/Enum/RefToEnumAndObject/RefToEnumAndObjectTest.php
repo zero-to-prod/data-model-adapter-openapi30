@@ -5,7 +5,7 @@ namespace Tests\Acceptance\Enum\RefToEnumAndObject;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\generated\Address;
 use Tests\generated\RoleEnum;
-use Tests\generated\User;
+use Tests\generated\Account;
 use Tests\TestCase;
 use Zerotoprod\DataModelAdapterOpenapi30\OpenApi30;
 use Zerotoprod\DataModelGenerator\Engine;
@@ -32,11 +32,11 @@ class RefToEnumAndObjectTest extends TestCase
         );
 
         self::assertStringEqualsFile(
-            expectedFile: self::$test_dir.'/User.php',
+            expectedFile: self::$test_dir.'/Account.php',
             actualString: <<<PHP
                 <?php
                 namespace Tests\generated;
-                class User
+                class Account
                 {
                 public readonly string \$name;
                 public readonly RoleEnum \$role;
@@ -67,16 +67,16 @@ class RefToEnumAndObjectTest extends TestCase
             ])
         );
 
-        $user = User::from([
-            User::name => 'John',
-            User::role => RoleEnum::admin,
-            User::address => [
+        $account = Account::from([
+            Account::name => 'John',
+            Account::role => RoleEnum::admin,
+            Account::address => [
                 Address::city => 'Portland',
             ],
         ]);
 
-        self::assertEquals('John', $user->name);
-        self::assertEquals(RoleEnum::admin, $user->role);
-        self::assertEquals('Portland', $user->address->city);
+        self::assertEquals('John', $account->name);
+        self::assertEquals(RoleEnum::admin, $account->role);
+        self::assertEquals('Portland', $account->address->city);
     }
 }

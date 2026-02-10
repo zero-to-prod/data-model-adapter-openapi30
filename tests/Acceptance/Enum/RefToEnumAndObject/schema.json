@@ -6,7 +6,7 @@
   },
   "components": {
     "schemas": {
-      "User": {
+      "Account": {
         "type": "object",
         "properties": {
           "name": {
