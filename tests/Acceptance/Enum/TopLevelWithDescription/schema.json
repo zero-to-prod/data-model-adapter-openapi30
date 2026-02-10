@@ -1,0 +1,17 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API",
+    "version": "v1.0.0"
+  },
+  "components": {
+    "schemas": {
+      "Role": {
+        "type": "string",
+        "description": "A user role",
+        "enum": ["admin", "user", "guest"]
+      }
+    }
+  },
+  "paths": {}
+}

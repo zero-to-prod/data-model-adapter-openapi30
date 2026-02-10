@@ -31,6 +31,22 @@ class OpenApi30
         $Models = [];
         $Enums = [];
         foreach ($OpenApi->components->schemas as $name => $Schema) {
+            if ($Schema->type === 'string' && $Schema->enum) {
+                $Enums[$name] = [
+                    Enum::comment => $Schema->description ? "/** $Schema->description */" : null,
+                    Enum::filename => Classname::generate($name, 'Enum.php'),
+                    Enum::backed_type => BackedEnumType::string,
+                    Enum::cases => array_map(
+                        static fn($value) => [
+                            EnumCase::name => $value,
+                            EnumCase::value => "'$value'"
+                        ],
+                        $Schema->enum
+                    ),
+                ];
+                continue;
+            }
+
             $constants = [];
             if ($Schema->type === 'object') {
                 foreach ($Schema->properties as $property_name => $PropertySchema) {
@@ -61,7 +77,7 @@ class OpenApi30
                 Model::properties => array_combine(
                     array_keys($Schema->properties),
                     array_map(
-                        static function (string $property_name, Schema|Reference $Schema) use (&$Enums) {
+                        static function (string $property_name, Schema|Reference $Schema) use ($OpenApi, &$Enums) {
                             $propertyData = [
                                 Property::attributes => [],
                                 Property::comment => null,
@@ -103,9 +119,14 @@ class OpenApi30
                                 $propertyData[Property::comment] = "/** $Schema->description */";
                             }
 
-                            $propertyData[Property::types] = isset($Schema->ref)
-                                ? [Classname::generate(basename($Schema->ref))]
-                                : PropertyTypeResolver::resolve($Schema, $enum ?? null);
+                            if (isset($Schema->ref)) {
+                                $refName = basename($Schema->ref);
+                                $refSchema = $OpenApi->components->schemas[$refName] ?? null;
+                                $suffix = ($refSchema && $refSchema->type === 'string' && $refSchema->enum) ? 'Enum' : '';
+                                $propertyData[Property::types] = [Classname::generate($refName).$suffix];
+                            } else {
+                                $propertyData[Property::types] = PropertyTypeResolver::resolve($Schema, $enum ?? null);
+                            }
 
                             return $propertyData;
                         },
