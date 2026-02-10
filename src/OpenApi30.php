@@ -134,6 +134,8 @@ class OpenApi30
                                     $propertyData[Property::types] = [Classname::generate($refName).'Enum'];
                                 } elseif ($refSchema && in_array($refSchema->type, ['integer', 'number', 'boolean', 'string'], true)) {
                                     $propertyData[Property::types] = PropertyTypeResolver::resolve($refSchema);
+                                } elseif ($refSchema && $refSchema->type === 'object' && !$refSchema->properties) {
+                                    $propertyData[Property::types] = ['array'];
                                 } else {
                                     $propertyData[Property::types] = [Classname::generate($refName)];
                                 }
