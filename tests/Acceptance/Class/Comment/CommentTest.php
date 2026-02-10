@@ -18,8 +18,7 @@ class CommentTest extends TestCase
             Config::from([
                 Config::model => [
                     ModelConfig::directory => self::$test_dir,
-                    ModelConfig::comments => true,
-                    ModelConfig::properties => []
+                    ModelConfig::comments => true
                 ]
             ])
         );
@@ -31,7 +30,6 @@ class CommentTest extends TestCase
                 /** User */
                 class User
                 {
-                public string \$name;
                 }
                 PHP
         );
@@ -44,7 +42,6 @@ class CommentTest extends TestCase
             Config::from([
                 Config::model => [
                     ModelConfig::directory => self::$test_dir,
-                    ModelConfig::properties => []
                 ]
             ])
         );
@@ -55,7 +52,6 @@ class CommentTest extends TestCase
                 <?php
                 class User
                 {
-                public string \$name;
                 }
                 PHP
         );

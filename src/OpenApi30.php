@@ -52,10 +52,6 @@ class OpenApi30
                 continue;
             }
 
-            if ($Schema->type === 'object' && !$Schema->properties) {
-                continue;
-            }
-
             $constants = [];
             if ($Schema->type === 'object') {
                 foreach ($Schema->properties as $property_name => $PropertySchema) {

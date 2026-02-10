@@ -8,12 +8,7 @@
     "schemas": {
       "User": {
         "type": "object",
-        "description": "User",
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        }
+        "description": "User"
       }
     }
   },
