@@ -14,6 +14,7 @@ use Zerotoprod\DataModelOpenapi30\OpenApi;
 use Zerotoprod\DataModelOpenapi30\Reference;
 use Zerotoprod\DataModelOpenapi30\Schema;
 use Zerotoprod\Psr4Classname\Classname;
+use Zerotoprod\Psr4VarName\Psr4VarName as VarName;
 
 /**
  * An adapter for the OpenAPI 3.0 for DataModelGenerator
@@ -54,20 +55,21 @@ class OpenApi30
             $constants = [];
             if ($Schema->type === 'object') {
                 foreach ($Schema->properties as $property_name => $PropertySchema) {
+                    $psr_name = VarName::generate($property_name);
                     $comment = isset($PropertySchema->description)
                         ?
                         <<<PHP
                         /**
                          * $PropertySchema->description
                          *
-                         * @see $$property_name
+                         * @see $$psr_name
                          */
                         PHP
                         : <<<PHP
-                        /** @see $$property_name */
+                        /** @see $$psr_name */
                         PHP;
 
-                    $constants[$property_name] = [
+                    $constants[$psr_name] = [
                         Constant::comment => $comment,
                         Constant::value => "'$property_name'",
                         Constant::type => 'string'
@@ -79,7 +81,7 @@ class OpenApi30
                 Model::comment => $Schema->description ? "/** $Schema->description */" : null,
                 Model::filename => Classname::generate($name, '.php'),
                 Model::properties => array_combine(
-                    array_keys($Schema->properties),
+                    array_map(static fn($k) => VarName::generate($k), array_keys($Schema->properties)),
                     array_map(
                         static function (string $property_name, Schema|Reference $Schema) use ($OpenApi, &$Enums, $name) {
                             $parentSchema = $OpenApi->components->schemas[$name];
@@ -140,6 +142,23 @@ class OpenApi30
                                 }
                             } else {
                                 $propertyData[Property::types] = PropertyTypeResolver::resolve($Schema, $enum ?? null);
+                            }
+
+                            $psr_name = VarName::generate($property_name);
+                            if ($psr_name !== $property_name) {
+                                $fromParam = "'from' => self::$psr_name";
+                                $merged = false;
+                                foreach ($propertyData[Property::attributes] as $i => $attr) {
+                                    if (str_contains($attr, '\\Zerotoprod\\DataModel\\Describe(')) {
+                                        $pos = strrpos($attr, '])]');
+                                        $propertyData[Property::attributes][$i] = substr($attr, 0, $pos).", $fromParam])]";
+                                        $merged = true;
+                                        break;
+                                    }
+                                }
+                                if (!$merged) {
+                                    $propertyData[Property::attributes][] = "#[\\Zerotoprod\\DataModel\\Describe([$fromParam])]";
+                                }
                             }
 
                             return $propertyData;

@@ -1,0 +1,31 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API",
+    "version": "v1.0.0"
+  },
+  "components": {
+    "schemas": {
+      "JsonWebKey": {
+        "type": "object",
+        "properties": {
+          "x5c#chain": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Certificate"
+            }
+          }
+        }
+      },
+      "Certificate": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "paths": {}
+}
