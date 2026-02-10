@@ -36,7 +36,7 @@
     "zero-to-prod/data-model": "^81.7",
     "zero-to-prod/transformable": "^71.0.9",
     "zero-to-prod/data-model-helper": "^82.0.4",
-    "zero-to-prod/data-model-openapi30": "^0.1.4",
+    "zero-to-prod/data-model-openapi30": "^0.1.4 || ^0.2.0",
     "zero-to-prod/psr4-classname": "^71.0",
     "zero-to-prod/psr4-varname": "^2.0",
     "zero-to-prod/package-helper": "^1.1.3",
