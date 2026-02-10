@@ -77,11 +77,13 @@ class OpenApi30
                 Model::properties => array_combine(
                     array_keys($Schema->properties),
                     array_map(
-                        static function (string $property_name, Schema|Reference $Schema) use ($OpenApi, &$Enums) {
+                        static function (string $property_name, Schema|Reference $Schema) use ($OpenApi, &$Enums, $name) {
+                            $parentSchema = $OpenApi->components->schemas[$name];
                             $propertyData = [
                                 Property::attributes => [],
                                 Property::comment => null,
                                 Property::types => null,
+                                Property::required => in_array($property_name, $parentSchema->required, true),
                             ];
 
                             if (isset($Schema->type, $Schema->items->ref) && $Schema->type === 'array') {
