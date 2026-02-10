@@ -132,11 +132,11 @@ class OpenApi30
                                     $propertyData[Property::types] = [Classname::generate($refName).'Enum'];
                                 } elseif ($refSchema && in_array($refSchema->type, ['integer', 'number', 'boolean', 'string'], true)) {
                                     $propertyData[Property::types] = PropertyTypeResolver::resolve($refSchema);
-                                    if (!$propertyData[Property::comment] && isset($refSchema->description)) {
-                                        $propertyData[Property::comment] = "/** $refSchema->description */";
-                                    }
                                 } else {
                                     $propertyData[Property::types] = [Classname::generate($refName)];
+                                }
+                                if (!$propertyData[Property::comment] && isset($refSchema->description)) {
+                                    $propertyData[Property::comment] = "/** $refSchema->description */";
                                 }
                             } else {
                                 $propertyData[Property::types] = PropertyTypeResolver::resolve($Schema, $enum ?? null);

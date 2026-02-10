@@ -1,0 +1,45 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API",
+    "version": "v1.0.0"
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "$ref": "#/components/schemas/APIKey"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/ZonedDateTime"
+          }
+        }
+      },
+      "APIKey": {
+        "description": "domain POJO to represent AuthenticationKey",
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          }
+        }
+      },
+      "Role": {
+        "description": "A user role",
+        "type": "string",
+        "enum": ["admin", "user", "guest"]
+      },
+      "ZonedDateTime": {
+        "description": "Milliseconds since the unix epoch",
+        "type": "integer",
+        "format": "int64"
+      }
+    }
+  },
+  "paths": {}
+}
