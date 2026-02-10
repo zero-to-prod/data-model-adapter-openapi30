@@ -38,6 +38,34 @@ class ScalarRefTest extends TestCase
         );
     }
 
+    #[Test] public function ref_to_scalar_includes_description_from_referenced_schema(): void
+    {
+        Engine::generate(
+            OpenApi30::adapt(json_decode(file_get_contents(__DIR__.'/schema.json'), true)),
+            Config::from([
+                Config::model => [
+                    ModelConfig::directory => self::$test_dir,
+                    ModelConfig::properties => [
+                        PropertyConfig::readonly => true,
+                        PropertyConfig::comments => true,
+                    ]
+                ]
+            ])
+        );
+
+        self::assertStringEqualsFile(
+            expectedFile: self::$test_dir.'/User.php',
+            actualString: <<<PHP
+                <?php
+                class User
+                {
+                /** Milliseconds since the unix epoch */
+                public readonly integer \$created_at;
+                }
+                PHP
+        );
+    }
+
     #[Test] public function ref_to_scalar_does_not_generate_class(): void
     {
         Engine::generate(
