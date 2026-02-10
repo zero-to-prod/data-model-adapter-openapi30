@@ -18,7 +18,8 @@ class ReadonlyTest extends TestCase
             Config::from([
                 Config::model => [
                     ModelConfig::directory => self::$test_dir,
-                    ModelConfig::readonly => true
+                    ModelConfig::readonly => true,
+                    ModelConfig::properties => []
                 ]
             ])
         );
@@ -29,6 +30,7 @@ class ReadonlyTest extends TestCase
                 <?php
                 readonly class User
                 {
+                public string \$name;
                 }
                 PHP
         );

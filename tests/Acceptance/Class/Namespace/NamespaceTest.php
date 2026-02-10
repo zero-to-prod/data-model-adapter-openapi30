@@ -19,6 +19,7 @@ class NamespaceTest extends TestCase
                 Config::model => [
                     ModelConfig::directory => self::$test_dir,
                     ModelConfig::namespace => 'App\\DataModels',
+                    ModelConfig::properties => []
                 ]
             ])
         );
@@ -30,6 +31,7 @@ class NamespaceTest extends TestCase
                 namespace App\DataModels;
                 class User
                 {
+                public string \$name;
                 }
                 PHP
         );

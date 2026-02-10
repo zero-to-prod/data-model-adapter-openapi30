@@ -32,6 +32,8 @@ class EmptyObjectSchemaTest extends TestCase
             ])
         );
 
+        self::assertFileDoesNotExist(self::$test_dir.'/ApplicationEvent.php');
+
         self::assertStringEqualsFile(
             expectedFile: self::$test_dir.'/User.php',
             actualString: <<<PHP

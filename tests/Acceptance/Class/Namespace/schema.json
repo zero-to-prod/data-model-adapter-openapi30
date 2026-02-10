@@ -7,7 +7,12 @@
   "components": {
     "schemas": {
       "User": {
-        "type": "object"
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
       }
     }
   },

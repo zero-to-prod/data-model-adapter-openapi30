@@ -18,6 +18,7 @@ class ClassTest extends TestCase
             Config::from([
                 Config::model => [
                     ModelConfig::directory => self::$test_dir,
+                    ModelConfig::properties => []
                 ]
             ])
         );
@@ -28,6 +29,7 @@ class ClassTest extends TestCase
                 <?php
                 class User
                 {
+                public string \$name;
                 }
                 PHP
         );
