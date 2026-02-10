@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API",
+    "version": "v1.0.0"
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "$ref": "#/components/schemas/ZonedDateTime"
+          }
+        }
+      },
+      "ZonedDateTime": {
+        "description": "Milliseconds since the unix epoch",
+        "type": "integer",
+        "format": "int64"
+      }
+    }
+  },
+  "paths": {}
+}

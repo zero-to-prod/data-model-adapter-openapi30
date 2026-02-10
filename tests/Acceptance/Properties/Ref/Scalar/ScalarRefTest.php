@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Acceptance\Properties\Required\NullableReadonly;
+namespace Tests\Acceptance\Properties\Ref\Scalar;
 
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -10,9 +10,9 @@ use Zerotoprod\DataModelGenerator\Models\Config;
 use Zerotoprod\DataModelGenerator\Models\ModelConfig;
 use Zerotoprod\DataModelGenerator\Models\PropertyConfig;
 
-class RequiredNullableReadonlyTest extends TestCase
+class ScalarRefTest extends TestCase
 {
-    #[Test] public function required_readonly_gets_required_attribute_and_non_required_readonly_gets_nullable_attribute(): void
+    #[Test] public function ref_to_scalar_resolves_to_primitive_type(): void
     {
         Engine::generate(
             OpenApi30::adapt(json_decode(file_get_contents(__DIR__.'/schema.json'), true)),
@@ -20,8 +20,7 @@ class RequiredNullableReadonlyTest extends TestCase
                 Config::model => [
                     ModelConfig::directory => self::$test_dir,
                     ModelConfig::properties => [
-                        PropertyConfig::nullable => true,
-                        PropertyConfig::readonly => true,
+                        PropertyConfig::readonly => true
                     ]
                 ]
             ])
@@ -33,12 +32,23 @@ class RequiredNullableReadonlyTest extends TestCase
                 <?php
                 class User
                 {
-                #[\Zerotoprod\DataModel\Describe(['required' => true])]
-                public readonly string \$name;
-                #[\Zerotoprod\DataModel\Describe(['nullable' => true])]
-                public readonly string|null \$age;
+                public readonly integer \$created_at;
                 }
                 PHP
         );
+    }
+
+    #[Test] public function ref_to_scalar_does_not_generate_class(): void
+    {
+        Engine::generate(
+            OpenApi30::adapt(json_decode(file_get_contents(__DIR__.'/schema.json'), true)),
+            Config::from([
+                Config::model => [
+                    ModelConfig::directory => self::$test_dir,
+                ]
+            ])
+        );
+
+        self::assertFileDoesNotExist(self::$test_dir.'/ZonedDateTime.php');
     }
 }

@@ -47,6 +47,10 @@ class OpenApi30
                 continue;
             }
 
+            if (in_array($Schema->type, ['integer', 'number', 'boolean', 'string'], true)) {
+                continue;
+            }
+
             $constants = [];
             if ($Schema->type === 'object') {
                 foreach ($Schema->properties as $property_name => $PropertySchema) {
@@ -124,8 +128,13 @@ class OpenApi30
                             if (isset($Schema->ref)) {
                                 $refName = basename($Schema->ref);
                                 $refSchema = $OpenApi->components->schemas[$refName] ?? null;
-                                $suffix = ($refSchema && $refSchema->type === 'string' && $refSchema->enum) ? 'Enum' : '';
-                                $propertyData[Property::types] = [Classname::generate($refName).$suffix];
+                                if ($refSchema && $refSchema->type === 'string' && $refSchema->enum) {
+                                    $propertyData[Property::types] = [Classname::generate($refName).'Enum'];
+                                } elseif ($refSchema && in_array($refSchema->type, ['integer', 'number', 'boolean', 'string'], true)) {
+                                    $propertyData[Property::types] = PropertyTypeResolver::resolve($refSchema);
+                                } else {
+                                    $propertyData[Property::types] = [Classname::generate($refName)];
+                                }
                             } else {
                                 $propertyData[Property::types] = PropertyTypeResolver::resolve($Schema, $enum ?? null);
                             }
